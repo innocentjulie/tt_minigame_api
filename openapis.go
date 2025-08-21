@@ -53,7 +53,8 @@ func (s *AppsV2TokenResponseData) SetExpiresAt(v int64) *AppsV2TokenResponseData
 	return s
 }
 
-func (t *TT) GetAccessToken(request *AppsV2TokenRequest, url string) (_result *AppsV2TokenResponse, _err error) {
+func (t *TT) GetAccessToken(request *AppsV2TokenRequest, url string) (*AppsV2TokenResponse, error) {
+	_result := &AppsV2TokenResponse{}
 	if url == "" {
 		url = "https://minigame.zijieapi.com/mgplatform/api/apps/v2/token"
 	}
@@ -74,13 +75,13 @@ func (t *TT) GetAccessToken(request *AppsV2TokenRequest, url string) (_result *A
 	if _result.ErrNo != 0 {
 		return nil, fmt.Errorf("get getClientToken failed, biz code not 0, err_no=%d err_msg=%s", _result.ErrNo, _result.ErrTips)
 	}
-	_err = err
+
 	tt.ClientToken = &CommonToken{
 		ExpireIn:  *_result.Data.ExpiresIn,
 		StartTime: time.Now().Add(-5 * time.Second),
 		Token:     *_result.Data.AccessToken,
 	}
-	return
+	return _result, err
 }
 
 type AppsCode2sessionRequest struct {
@@ -145,7 +146,8 @@ func (s *AppsCode2sessionResponse) SetAnonymousOpenid(v string) *AppsCode2sessio
 	s.AnonymousOpenid = &v
 	return s
 }
-func (t *TT) Code2Session(request *AppsCode2sessionRequest, url string) (_result *AppsCode2sessionResponse, _err error) {
+func (t *TT) Code2Session(request *AppsCode2sessionRequest, url string) (*AppsCode2sessionResponse, error) {
+	_result := &AppsCode2sessionResponse{}
 	if url == "" {
 		url = "https://minigame.zijieapi.com/mgplatform/api/apps/jscode2session"
 	}
@@ -171,6 +173,6 @@ func (t *TT) Code2Session(request *AppsCode2sessionRequest, url string) (_result
 	if _result.Error != 0 {
 		return nil, fmt.Errorf("get Code2Session failed, biz code not 0,error=%d, err_no=%d err_msg=%s", _result.Error, _result.Errcode, _result.Errmsg)
 	}
-	_err = err
-	return
+
+	return _result, err
 }

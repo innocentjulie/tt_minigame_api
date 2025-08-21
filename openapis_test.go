@@ -1,6 +1,7 @@
 package tt_minigame_api
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -57,7 +58,23 @@ func TestGetDefaultTT(t *testing.T) {
 }
 
 func TestTT_GetAccessToken(t *testing.T) {
-
+	tt := GetTT()
+	grandType := "client_credential"
+	appId := ""
+	secret := ""
+	req := &AppsV2TokenRequest{
+		GrantType: &grandType,
+		Appid:     &appId,
+		Secret:    &secret,
+	}
+	result, err := tt.GetAccessToken(req, "")
+	if err != nil {
+		fmt.Println(err)
+		fmt.Sprintln("get access token err:", err)
+		return
+	}
+	fmt.Println("get access token success")
+	fmt.Println(result)
 }
 func TestTT_Code2Session(t *testing.T) {
 
