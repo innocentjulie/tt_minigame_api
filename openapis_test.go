@@ -77,5 +77,23 @@ func TestTT_GetAccessToken(t *testing.T) {
 	fmt.Println(result)
 }
 func TestTT_Code2Session(t *testing.T) {
-
+	code := "Rd6ahYdN9s0mOgip5E27ggkCoE9fSj0_qfoymOUgNT74ws0VhCNBgWjR26dfA5f_elJAhgGgRWMcGOVw1botR7VI7vU5J-p8cOOnjxt6LcN0aCDY2b8a0eqvlTc"
+	tt := GetTT()
+	appId := ""
+	secret := ""
+	anonymousCode := ""
+	req := &AppsCode2sessionRequest{
+		Appid:         &appId,
+		Secret:        &secret,
+		Code:          &code,
+		AnonymousCode: &anonymousCode,
+	}
+	result, err := tt.Code2Session(req, "")
+	if err != nil {
+		fmt.Println(err)
+		fmt.Sprintln("get access token err:", err)
+		return
+	}
+	fmt.Println("get access token success")
+	fmt.Println(result)
 }
